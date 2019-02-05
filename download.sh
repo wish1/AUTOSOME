@@ -8,7 +8,7 @@ VCF=$3
 Num=$4
 n=0
 while read LINE; do
-	if n==Num;then
+	if $n==$Num;then
 		IFS='	'
 		read -ra ADDR <<< $LINE
 		if [ ${ADDR[2]}=="Homo sapiens" ]; then
@@ -35,8 +35,8 @@ while read LINE; do
 		mkdir /home/Abramov/Alignments/"$TF/$EXP"
 	
 		if [ $? != 0 ]; then
-		    echo "Failed to make dir"
-	    	exit 1
+			echo "Failed to make dir"
+	    		exit 1
 		fi
 		
 		scp -P 1235  autosome@127.0.0.1:$ALIGNPATH /home/Abramov/Alignments/"$TF/$EXP/$ALIGNEXP.bam"
@@ -75,4 +75,3 @@ while read LINE; do
 	fi
 		n=$n+1
 done < ./MasterList.txt
-
