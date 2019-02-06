@@ -14,9 +14,9 @@ while read LINE; do
 		IFS='	'
 		read -ra ADDR <<< $LINE
 		if [ ${ADDR[2]}=="Homo sapiens" ]; then
-			if [ ${ADDR[3]} != "None" ]; then
+			if ${#arr[*]}==11;then
 				EXP=${ADDR[0]}
-				echo $EXP
+				echo "making $EXP with ctrl"
 				TF=${ADDR[1]}
 				ALIGNEXP=${ADDR[3]}
 				ALIGNPATH=${ADDR[4]}
@@ -27,7 +27,17 @@ while read LINE; do
 				GEM=${ADDR[9]}
 				ALIGNCTRL=${ADDR[10]}
 				CTRLPATH=${ADDR[11]}
-			fi
+			else:
+				EXP=${ADDR[0]}
+				echo "making $EXP without ctrl"
+				TF=${ADDR[1]}
+				ALIGNEXP=${ADDR[3]}
+				ALIGNPATH=${ADDR[4]}
+				PEAKS=${ADDR[5]}
+				MACS=${ADDR[6]}
+				SISSRS=${ADDR[7]}
+				CPICS=${ADDR[8]}
+				GEM=${ADDR[9]}
 		fi
 	
 		if ! [ -d /home/Abramov/Alignments/"$TF" ]; then
@@ -115,6 +125,7 @@ while read LINE; do
 			fi
 			
 			rm /home/Abramov/Alignments/"$TF/$EXP/$ALIGNCTRL.bam"
+		
 		fi
 		
 		
