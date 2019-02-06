@@ -38,6 +38,7 @@ while read LINE; do
 				SISSRS=${ADDR[7]}
 				CPICS=${ADDR[8]}
 				GEM=${ADDR[9]}
+			fi
 		fi
 	
 		if ! [ -d /home/Abramov/Alignments/"$TF" ]; then
