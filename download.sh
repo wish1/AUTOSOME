@@ -3,9 +3,9 @@
 #ssh -L 1235:autosome.dote.ru:60011 abramov@globe.autosome.ru cat -
 
 #usage bash download.sh /home/Abramov/REFERENCE /home/Abramov/REFERENCE/00-common_all.vcf.gz num
-REF=$2
-VCF=$3
-Num=$4
+REF=$1
+VCF=$2
+Num=$3
 n=0
 ALIGNCTRL=false
 
