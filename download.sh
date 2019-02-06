@@ -9,8 +9,8 @@ Num=$3
 n=0
 ALIGNCTRL="1"
 while read LINE; do
-	if $n==$Num;then
-		IFS='	'
+	if [ $n==$Num ];then
+		IFS=';'
 		read -ra ADDR <<< $LINE
 		if [ ${ADDR[2]}=="Homo sapiens" ]; then
 			if [ ${#ADDR[*]}==13 ];then
