@@ -62,6 +62,7 @@ while read LINE; do
 	    			exit 1
 			fi
 		else
+			echo "Control experiment $EXPCTRL already processed"
 			ALIGNCTRL="1"
 		fi
 		
