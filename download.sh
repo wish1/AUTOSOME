@@ -42,7 +42,7 @@ while read LINE; do
 		fi
 	
 		if ! [ -d /home/Abramov/Alignments/EXP/"$TF" ]; then
-			mkdir /home/Abramov/Alignments/"$TF"
+			mkdir /home/Abramov/Alignments/EXP/"$TF"
 			if [ $? != 0 ]; then
 				echo "Failed to make dir $TF"
 	    			exit 1
@@ -55,8 +55,8 @@ while read LINE; do
 	    		exit 1
 		fi
 		
-		if ! [ -d /home/Abramov/Alignments/"$TF/$EXPCTRL" ]; then
-			mkdir /home/Abramov/Alignments/CTRL/"$TF/$EXPCTRL"
+		if ! [ -d /home/Abramov/Alignments/CTRL/"$EXPCTRL" ]; then
+			mkdir /home/Abramov/Alignments/CTRL/"$EXPCTRL"
 			if [ $? != 0 ]; then
 				echo "Failed to make dir $EXPCTRL"
 	    			exit 1
@@ -97,7 +97,7 @@ while read LINE; do
 		fi
 		
 		if [ $ALIGNCTRL!="1" ]; then
-			scp -P 1235  autosome@127.0.0.1:$CTRLPATH /home/Abramov/Alignments/CTRL/"$TF/$EXPCTRL/$ALIGNCTRL.bam"
+			scp -P 1235  autosome@127.0.0.1:$CTRLPATH /home/Abramov/Alignments/CTRL/"$EXPCTRL/$ALIGNCTRL.bam"
 			if [ $? != 0 ]; then
 				echo "Failed to download ALIGNCTRL $EXP"
 	    		exit 1
@@ -108,30 +108,28 @@ while read LINE; do
 		if [ $ALIGNCTRL!="1" ]; then
 			bash SNPcalling.sh -Ref $REF \
 				-Exp /home/Abramov/Alignments/EXP/"$TF/$EXP/$ALIGNEXP.bam" \
-				-Ctrl /home/Abramov/Alignments/CTRL/"$TF/$EXP/$ALIGNCTRL.bam" \
-				-WGE \
-				-WGC \
+				-WG \
 				-VCF $VCF \
-				-Out /home/Abramov/Alignments/EXP/"$TF/$EXP" \
-				-macs /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_macs.interval" \
-				-sissrs /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_sissrs.interval" \
-				-gem /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_gem.interval" \
-				-cpics /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_cpics.interval"
+				-Out /home/Abramov/Alignments/EXP/"$TF/$EXPCTRL" 
+			
+			bash SNPcalling.sh -Ref $REF \
+				-Exp /home/Abramov/Alignments/CTRL/"$EXPCTRL/$ALIGNCTRL.bam" \
+				-WG \
+				-VCF $VCF \
+				-Out /home/Abramov/Alignments/CTRL/"$EXPCTRL" \
 			if [ $? != 0 ]; then
 				echo "Failed SNPcalling $EXP"
 	    			exit 1
 			fi
+			
 			rm /home/Abramov/Alignments/CTRL/"$TF/$EXPCTRL/$ALIGNCTRL.bam"
 		else
 			bash SNPcalling.sh -Ref $REF \
 				-Exp /home/Abramov/Alignments/EXP/"$TF/$EXP/$ALIGNEXP.bam" \
-				-WGE \
+				-WG \
 				-VCF $VCF \
-				-Out /home/Abramov/Alignments/EXP/"$TF/$EXP" \
-				-macs /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_macs.interval" \
-				-sissrs /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_sissrs.interval" \
-				-gem /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_gem.interval" \
-				-cpics /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_cpics.interval"
+				-Out /home/Abramov/Alignments/EXP/"$TF/$EXP" 
+				
 			if [ $? != 0 ]; then
 				echo "Failed SNPcalling $EXP"
 	    			exit 1
@@ -143,10 +141,16 @@ while read LINE; do
 		
 		
 		rm /home/Abramov/Alignments/EXP/"$TF/$EXP/$ALIGNEXP.bam"	
-		rm /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_macs.interval"
-		rm /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_sissrs.interval"
-		rm /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_gem.interval"
-		rm /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_cpics.interval"
 	fi
-		n=$n+1
+	
+	bash make_tables.sh -Out /home/Abramov/Alignments/EXP/"$TF/$EXP \
+		-Ref $REF \
+		-macs /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_macs.interval" \
+		-sissrs /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_sissrs.interval" \
+		-cpics /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_cpics.interval" \
+		-gem /home/Abramov/Alignments/EXP/"$TF/$EXP/${PEAKS}_gem.interval" \
+		-VCFexp /home/Abramov/Alignments/EXP/"$TF/$EXP/$ALIGNEXP.vcf" \
+		-VCFctrl /home/Abramov/Alignments/CTRL/"$EXPCTRL/$ALIGNCTRL.ctrl"
+		
+	n=$n+1
 done < ./MasterList.txt
