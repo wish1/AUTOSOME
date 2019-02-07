@@ -16,7 +16,7 @@ REGEX_ALIGNS = r"D?ALIGNS\d{4,}"
 BASE_PATH_PEAKS = "/srv/*/egrid/peaks-interval/{}/*.interval"
 BASE_PATH_ALIGNS = "/srv/*/egrid/aligns-sorted/*.bam"
 
-PEAKS_TYPES = ["gem", "sissrs", "macs", "cpics"]
+PEAKS_TYPES = ["macs", "sissrs", "cpics", "gem"]
 
 def get_files(lines):
     aligns, aligns_control, peaks = tuple(zip(*(l.strip().split(",") for l in lines)))
