@@ -1,4 +1,4 @@
-+"\n"import sys
+import sys
 
 smth = open(sys.argv[1],"r")
 input = open(TMP.txt,"r")
