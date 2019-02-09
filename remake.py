@@ -1,8 +1,8 @@
 import sys
 
 smth = open(sys.argv[1],"r")
-input = open(TMP.txt,"r")
-output = open(MasterList.txt,"w")
+input = open("TMP.txt","r")
+output = open("MasterList.txt","w")
 while input:
   line = smth.readline().split(",")
   paths = input.readline().split()
