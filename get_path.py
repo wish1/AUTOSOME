@@ -42,7 +42,7 @@ def get_files(lines):
     peaks_paths = extract_peaks(peaks)
     liner_gen = zip(aligns_paths, control_paths, *(peaks_paths[ptype] for ptype in PEAKS_TYPES))
     for i in liner_gen:
-        print(" ".join(i))
+        print(";".join(i))
     return None
 
 def extract_aligns(aligns, aligns_control):
